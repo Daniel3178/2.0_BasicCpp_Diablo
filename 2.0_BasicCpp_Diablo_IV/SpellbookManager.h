@@ -10,7 +10,7 @@ namespace diablo_IV
 	{
 	private:
 		Player& myPlayer;
-		
+		const uint8_t CountSpellbookOpt() const;
 	public:
 		SpellbookManager(Player& aPlayer) : myPlayer(aPlayer)
 		{};

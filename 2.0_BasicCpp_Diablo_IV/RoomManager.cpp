@@ -18,7 +18,6 @@ namespace diablo_IV
 	{
 		uint8_t optCounter { 0 };
 		uint8_t plrOpt { 0 };
-		bool isAccepted { true };
 		std::cout << "\n\n";
 
 		for(auto& eachDoor : myRoom->GetDoors())

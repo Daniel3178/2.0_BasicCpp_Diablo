@@ -23,5 +23,7 @@ namespace diablo_IV
 		std::shared_ptr<Room>&		myRoom;
 		Player&		myPlayer;
 		ItemFactory& myItemFactory;
+		const uint8_t CountInCombatOpt()const;
+		void ApplySpellEffect();
 	};
 }

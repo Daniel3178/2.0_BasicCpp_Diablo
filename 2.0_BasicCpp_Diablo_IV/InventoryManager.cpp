@@ -19,7 +19,7 @@ namespace diablo_IV
 
 		if(!myPlayer.GetPlayerInventory().empty())
 		{
-			while(myPlayer.GetPlayerInventory().size() * 2 - plrOpt != -1)
+			while(!IsQuitPressed(myPlayer.GetPlayerInventory().size() * 2, plrOpt))
 			{
 				for(auto& eachItem : myPlayer.GetPlayerInventory())
 				{
@@ -48,7 +48,7 @@ namespace diablo_IV
 				optCounter = 0;
 				std::cout << '\n';
 
-				if(myPlayer.GetPlayerInventory().size() * 2 - plrOpt != -1)
+				if(!IsQuitPressed(myPlayer.GetPlayerInventory().size() *2, plrOpt))
 				{
 					if(plrOpt % 2 == 0)
 					{

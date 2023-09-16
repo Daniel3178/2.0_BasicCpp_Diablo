@@ -30,11 +30,11 @@ namespace diablo_IV
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(1, (uint8_t) (myRoom->GetEnemies().size() + 2));
+		std::uniform_int_distribution<> dis(1, static_cast<uint8_t>(myRoom->GetEnemies().size() + 2));
 		PlayerManager myPlayerManager(myPlayer);
 
 		for(int i = 0, j = dis(gen); i < myRoom->GetEnemies().size() && myPlayer.GetPlayerLifeState() == true; i += (j % 3) == 0 ? j % 3 + 1 : j % 3, j = dis(gen))
-		{ /*Här är ett exempel på en multi-variabel for loop */
+		{ 
 			if(myRoom->GetEnemies().at(i) != nullptr)
 			{
 			myPlayerManager.PlayerGetDamage(myRoom->GetEnemies().at(i)->GetAttackDamage());
@@ -55,19 +55,12 @@ namespace diablo_IV
 		}
 	}
 
-	uint8_t BattleController::GetPlayerCombatOption()
+	const uint8_t BattleController::CountInCombatOpt() const
 	{
-		uint16_t enemyHp { 0 };
 		uint8_t optCounter { 0 };
-		uint8_t plrOpt { 0 };
-		std::cout << "\n\n";
-
 		for(auto& eachEnemy : myRoom->GetEnemies())
 		{
-
-
-				std::cout << "\t[Press " << (int)++optCounter << ']' << " Attack! | Enemy type: " << eachEnemy->GetName() << " | HP: " << (int)eachEnemy->GetHealth() << '\n';
-
+			std::cout << "\t[Press " << (int)++optCounter << ']' << " Attack! | Enemy type: " << eachEnemy->GetName() << " | HP: " << (int) eachEnemy->GetHealth() << '\n';
 		}
 
 		if(optCounter == 0)
@@ -78,6 +71,18 @@ namespace diablo_IV
 		std::cout << "\t[Press " << (int)++optCounter << ']' << " Show player states" << '\n';
 		std::cout << "\t[Press " << (int) ++optCounter << ']' << " Quit" << '\n';
 		std::cout << "\n\tYour choirs : ";
+		return optCounter;
+	}
+
+
+	uint8_t BattleController::GetPlayerCombatOption()
+	{
+		uint16_t enemyHp { 0 };
+		uint8_t optCounter { 0 };
+		uint8_t plrOpt { 0 };
+		std::cout << "\n\n";
+		
+		optCounter = CountInCombatOpt();
 
 		do
 		{
@@ -86,6 +91,21 @@ namespace diablo_IV
 		while(plrOpt > optCounter || plrOpt <= 0);
 		return plrOpt;
 	}
+
+	void BattleController::ApplySpellEffect()
+	{
+		std::cout << "\n\t++++++++++++++++++++++++++++++++++\n";
+		for(int i = 0; i < myRoom->GetEnemies().size(); i++)
+		{
+			if(myRoom->GetEnemies().at(i) != nullptr)
+			{
+				myRoom->GetEnemies().at(i)->TakeDamage(5);
+				std::cout << "\tEnemies are taking damage of a spell\n";
+			}
+		}
+		std::cout << "\t++++++++++++++++++++++++++++++++++\n";
+	}
+
 
 	void BattleController::Combat()
 	{
@@ -96,18 +116,11 @@ namespace diablo_IV
 		{
 			if(myPlayer.GetPlayerSpelState())
 			{
-				std::cout << "\n\t++++++++++++++++++++++++++++++++++\n";
-				for(int i = 0; i < myRoom->GetEnemies().size(); i++)
-				{
-					if(myRoom->GetEnemies().at(i) != nullptr)
-					{
-						myRoom->GetEnemies().at(i)->TakeDamage(5);
-						std::cout << "\tEnemies are taking damage of a spell\n";
-					}
-				}
-				std::cout << "\t++++++++++++++++++++++++++++++++++\n";
+				ApplySpellEffect();
 			}
+
 			plrOpt = GetPlayerCombatOption();
+
 			if(plrOpt <= myRoom->GetEnemies().size())
 			{
 				myRoom->GetEnemies().at(static_cast<uint8_t>(plrOpt - 1))->TakeDamage(myPlayer.GetPlayerAttackDamageValue());

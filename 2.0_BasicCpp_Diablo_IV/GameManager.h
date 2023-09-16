@@ -11,15 +11,17 @@ namespace diablo_IV
 	class			Box;
 	class EnemyFactory;
 	class ItemFactory;
-
+	enum class eRoomID;
 	class GameManager 
 	{
 	public:
 					GameManager(ItemFactory& anItemFactory, EnemyFactory& anEnemyFactory) : myItemFactory(anItemFactory), myEnemyFactory(anEnemyFactory){};
-		void		Play(Player* aPlayer, std::shared_ptr<Room>& aRoom);
 		void		Run();
+		eRoomID     Play(Player* aPlayer, std::shared_ptr<Room>& aRoom);
 	private:
+		void DisplayIntroToRoom(const eRoomID aRoomID);
 		ItemFactory& myItemFactory;
 		EnemyFactory& myEnemyFactory;
+
 	};
 }

@@ -17,7 +17,7 @@
 namespace diablo_IV
 {
 
-	void GameManager::Play(Player* aPlayer, std::shared_ptr<Room>& aRoom)
+	eRoomID GameManager::Play(Player* aPlayer, std::shared_ptr<Room>& aRoom)
 	{
 		PlayerManager myPlayerManager(*aPlayer);
 		BattleController myBattleController(*aPlayer, aRoom, myItemFactory);
@@ -28,7 +28,43 @@ namespace diablo_IV
 		SpellbookManager mySpellbookManager = SpellbookManager(*aPlayer);
 
 
-		switch(aRoom->GetRoomID())
+		DisplayIntroToRoom(aRoom->GetRoomID());
+
+		switch(myRoomManager.GetPlayerRoomOpt())
+		{
+		case 1:
+			myBattleController.Combat();
+			break;
+		case 2:
+			myRoomManager.ChoseRoom();
+			break;
+		case 3:
+			myBoxManager.ChoseBox();
+			break;
+		case 4:
+			myRoomManager.PlayerRoomObjectChoices();
+			break;
+		case 5:
+			myInventoryManager.PlayerInventoryChoices();
+			break;
+		case 6:
+			myPlayerManager.DisplayPlayerStates();
+			break;
+		case 7:
+			myEquipment.PlayerEquipmentChoices();
+			break;
+		case 8:
+			mySpellbookManager.PlayerSpellbookChoice();
+			break;
+		default:
+			break;
+		}
+		return aPlayer->GetPlayerCurrentRoom();
+	}
+
+	void GameManager::DisplayIntroToRoom(const eRoomID aRoomID)
+	{
+		switch(aRoomID)
 		{
 		case eRoomID::eRoom_A:
 			std::cout << "\n\t========================";
@@ -68,35 +104,6 @@ namespace diablo_IV
 		default:
 			break;
 		}
-		switch(myRoomManager.GetPlayerRoomOpt())
-		{
-		case 1:
-			myBattleController.Combat();
-			break;
-		case 2:
-			myRoomManager.ChoseRoom();
-			break;
-		case 3:
-			myBoxManager.ChoseBox();
-			break;
-		case 4:
-			myRoomManager.PlayerRoomObjectChoices();
-			break;
-		case 5:
-			myInventoryManager.PlayerInventoryChoices();
-			break;
-		case 6:
-			myPlayerManager.DisplayPlayerStates();
-			break;
-		case 7:
-			myEquipment.PlayerEquipmentChoices();
-			break;
-		case 8:
-			mySpellbookManager.PlayerSpellbookChoice();
-			break;
-		default:
-			break;
-		}
 	}
 
 	void GameManager::Run()
@@ -119,83 +126,20 @@ namespace diablo_IV
 			<< "the peace once more!\n";
 		while(myPlayer.GetPlayerLifeState() == true && myMapBuilder.GetRoomByID(eRoomID::eRoom_C)->GetEnemies().size() > 0)
 		{
-			switch(myPlayer.GetPlayerCurrentRoom())
-			{
-			case diablo_IV::eRoomID::eRoom_A:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_A && myPlayer.GetPlayerLifeState() == true)
+			eRoomID tmpPlayerCurrentRoomID = myPlayer.GetPlayerCurrentRoom();
+
+				while( myPlayer.GetPlayerLifeState() == true)
 				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_A));
+					tmpPlayerCurrentRoomID = Play(&myPlayer, myMapBuilder.GetRoomByID(tmpPlayerCurrentRoomID));
 					if(myPlayer.GetPlayerSpelState())
 					{
 						myPlayerManager.CountSpelTimer();
 					}
 				}
-				break;
-			case diablo_IV::eRoomID::eRoom_B:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_B && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_B));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			case diablo_IV::eRoomID::eRoom_C:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_C && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_C));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			case diablo_IV::eRoomID::eRoom_D:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_D && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_D));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			case diablo_IV::eRoomID::eRoom_E:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_E && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_E));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			case diablo_IV::eRoomID::eRoom_F:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_F && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_F));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			case diablo_IV::eRoomID::eRoom_G:
-				while(myPlayer.GetPlayerCurrentRoom() == eRoomID::eRoom_G && myPlayer.GetPlayerLifeState() == true)
-				{
-					Play(&myPlayer, myMapBuilder.GetRoomByID(eRoomID::eRoom_G));
-					if(myPlayer.GetPlayerSpelState())
-					{
-						myPlayerManager.CountSpelTimer();
-					}
-				}
-				break;
-			default:
-				break;
-			}
+			
 		}
 		myPlayer.GetPlayerLifeState() ? std::cout << "\nGood Job!" : std::cout << "\nYou have been killed by an enemy!\n";
 		system("pause");
 	}
+
 }

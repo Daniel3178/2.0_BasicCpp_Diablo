@@ -10,6 +10,21 @@
 
 namespace diablo_IV
 {
+	const uint8_t SpellbookManager::CountSpellbookOpt() const
+	{
+		uint8_t optCounter { 0 };
+
+		for(auto& eachItem : myPlayer.GetPlayerSpellbook())
+		{
+			std::cout << "\t[Press " << (int) ++optCounter << " ] :: Activate the spell" << eachItem->GetStats().GetName() << '\n';
+		}
+
+		std::cout << "\t[Press " << (int) ++optCounter << " ] :: Quit \n";
+		std::cout << "\n\tYour choice : ";
+		return optCounter;
+	}
+
+
 	void SpellbookManager::PlayerSpellbookChoice()
 	{
 		uint8_t optCounter { 0 };
@@ -19,16 +34,9 @@ namespace diablo_IV
 
 		if(!myPlayer.GetPlayerSpellbook().empty())
 		{
-			while(myPlayer.GetPlayerSpellbook().size() - plrOpt != -1)
+			while(!IsQuitPressed(myPlayer.GetPlayerSpellbook(), plrOpt))
 			{
-				for(auto& eachItem : myPlayer.GetPlayerSpellbook())
-				{
-						std::cout << "\t[Press " << (int) ++optCounter << " ] :: Activate the spell" << eachItem->GetStats().GetName() << '\n';
-				}
-
-				std::cout << "\t[Press " << (int) ++optCounter << " ] :: Quit \n";
-				std::cout << "\n\tYour choice : ";
-
+				optCounter = CountSpellbookOpt();
 				do
 				{
 					plrOpt = GetPlayerIntFormat();
@@ -37,7 +45,7 @@ namespace diablo_IV
 				optCounter = 0;
 				std::cout << '\n';
 
-				if(myPlayer.GetPlayerSpellbook().size() - plrOpt != -1)
+				if(!IsQuitPressed(myPlayer.GetPlayerSpellbook(), plrOpt))
 				{
 					myPlayerManager.ActivatePlayerSpell(myPlayer.GetPlayerSpellbook(), plrOpt - 1);
 					plrOpt = 0;
@@ -51,9 +59,7 @@ namespace diablo_IV
 
 		else
 		{
-			std::cout << "\tEmpty!\n";
-			system("pause");
-			return;
+			ForceToReturn();
 		}
 	}
 }
