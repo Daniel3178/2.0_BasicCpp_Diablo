@@ -75,17 +75,9 @@ namespace diablo_IV
 			}
 		}
 
-		if(myPlayer.GetPlayerInventory().empty())
+		else 
 		{
-			std::cout << "\t[Press " << (int) ++optCounter << " ] :: Quit \n";
-			std::cout << "\n\tYour choice : ";
-
-			do
-			{
-				plrOpt = GetPlayerIntFormat();
-			}
-			while(plrOpt > optCounter || plrOpt <= 0);
-			return;
+			ForceToReturn();
 		}
 	}
 
