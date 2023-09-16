@@ -1,0 +1,10 @@
+﻿  BattleController.cpp
+  BoxManager.cpp
+  Door.cpp
+  GameManager.cpp
+  MapBuilder.cpp
+  Player.cpp
+  Room.cpp
+  RoomManager.cpp
+  Generating Code...
+  2.0_BasicCpp_Diablo_IV.vcxproj -> F:\Programering Archive\SideProjects\2.0_BasicCpp_Diablo_IV\x64\Debug\2.0_BasicCpp_Diablo_IV.exe
