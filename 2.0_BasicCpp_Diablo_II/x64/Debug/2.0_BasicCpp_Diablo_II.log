@@ -1,0 +1,18 @@
+﻿  BattleController.cpp
+  Box.cpp
+  BoxManager.cpp
+  Door.cpp
+  Enemy.cpp
+  EnemyType_DragonGuardiant.cpp
+  EnemyType_Skeleton.cpp
+  EnemyType_VampireKnight.cpp
+  GameManager.cpp
+  InventoryManager.cpp
+  Main.cpp
+  MapBuilder.cpp
+  Player.cpp
+  PlayerManager.cpp
+  Room.cpp
+  RoomManager.cpp
+  Generating Code...
+  2.0_BasicCpp_Diablo_II.vcxproj -> F:\Programering Archive\SideProjects\2.0_BasicCpp_Diablo_II\x64\Debug\2.0_BasicCpp_Diablo_II.exe
